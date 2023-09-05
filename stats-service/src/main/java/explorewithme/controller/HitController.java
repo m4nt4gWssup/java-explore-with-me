@@ -17,18 +17,18 @@ import java.util.List;
 @Slf4j
 public class HitController {
     private final HitService hitService;
+    private static final String FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
-    public List<HitViewDto> get(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime start,
-                                @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
+    public List<HitViewDto> get(@RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime start,
+                                @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
                                 @RequestParam(required = false) List<String> uris,
                                 @RequestParam(defaultValue = "false") Boolean unique) {
 
         log.info("Получен запрос GET /stats");
         return hitService.get(start, end, uris, unique);
     }
-
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)

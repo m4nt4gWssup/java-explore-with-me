@@ -26,12 +26,15 @@ public class HitSetviceImpl implements HitService {
     @Override
     @Transactional
     public HitDto create(HitDto hitDto) {
-        return HitMapper.toDto(hitRepository.save(new Hit(
+        log.info("Создание информации о посещении с данными: {}", hitDto);
+        Hit savedHit = hitRepository.save(new Hit(
                 hitDto.getId(),
                 hitDto.getApp(),
                 hitDto.getUri(),
                 hitDto.getIp(),
-                hitDto.getTimestamp())));
+                hitDto.getTimestamp()));
+        log.info("Информация о посещении сохранена с ID: {}", savedHit.getId());
+        return HitMapper.toDto(savedHit);
     }
 
     @Override
