@@ -1,4 +1,4 @@
-package explorewithme.model;
+package ru.practicum.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

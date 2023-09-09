@@ -1,7 +1,7 @@
-package explorewithme.service;
+package ru.practicum.service;
 
-import explorewithme.dto.HitDto;
-import explorewithme.dto.HitViewDto;
+import ru.practicum.dto.HitDto;
+import ru.practicum.dto.HitViewDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

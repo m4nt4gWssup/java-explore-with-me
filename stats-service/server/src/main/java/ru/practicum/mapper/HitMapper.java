@@ -1,8 +1,8 @@
-package explorewithme.mapper;
+package ru.practicum.mapper;
 
-import explorewithme.dto.HitDto;
-import explorewithme.model.Hit;
 import lombok.experimental.UtilityClass;
+import ru.practicum.dto.HitDto;
+import ru.practicum.model.Hit;
 
 @UtilityClass
 public class HitMapper {

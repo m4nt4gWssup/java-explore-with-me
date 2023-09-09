@@ -1,7 +1,7 @@
-package explorewithme.mapper;
+package ru.practicum.mapper;
 
-import explorewithme.dto.HitViewDto;
 import lombok.experimental.UtilityClass;
+import ru.practicum.dto.HitViewDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

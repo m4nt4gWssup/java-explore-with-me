@@ -1,15 +1,15 @@
-package explorewithme.service;
+package ru.practicum.service;
 
-import explorewithme.dto.HitDto;
-import explorewithme.dto.HitViewDto;
-import explorewithme.mapper.HitMapper;
-import explorewithme.mapper.HitViewMapper;
-import explorewithme.model.Hit;
-import explorewithme.repository.HitRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import ru.practicum.dto.HitDto;
+import ru.practicum.dto.HitViewDto;
+import ru.practicum.mapper.HitMapper;
+import ru.practicum.mapper.HitViewMapper;
+import ru.practicum.model.Hit;
+import ru.practicum.repository.HitRepository;
 
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
