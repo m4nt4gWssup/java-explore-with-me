@@ -10,9 +10,9 @@ import java.time.format.DateTimeFormatter;
 @UtilityClass
 public class DateTimeMapper {
 
-    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public String toStringDate(LocalDateTime date) {
-        return date.format(FORMATTER);
+        return date.format(formatter);
     }
 }
