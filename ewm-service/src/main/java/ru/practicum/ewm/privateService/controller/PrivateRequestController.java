@@ -4,6 +4,7 @@ package ru.practicum.ewm.privateService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.baseService.dto.request.ParticipationRequestDto;
@@ -20,25 +21,22 @@ public class PrivateRequestController {
     private final PrivateRequestService service;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<ParticipationRequestDto> getRequests(@PathVariable Long userId) {
+    public ResponseEntity<List<ParticipationRequestDto>> getRequests(@PathVariable Long userId) {
         log.info("Получен запрос GET /users/{}/requests", userId);
-        return service.getRequests(userId);
+        return new ResponseEntity<>(service.getRequests(userId), HttpStatus.OK);
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ParticipationRequestDto create(@PathVariable Long userId,
-                                          @RequestParam Long eventId) {
+    public ResponseEntity<ParticipationRequestDto> create(@PathVariable Long userId,
+                                                          @RequestParam Long eventId) {
         log.info("Получен запрос POST /users/{}/requests c новым запросом на участие в Event с id = {}", userId, eventId);
-        return service.create(userId, eventId);
+        return new ResponseEntity<>(service.create(userId, eventId), HttpStatus.CREATED);
     }
 
     @PatchMapping("/{requestsId}/cancel")
-    @ResponseStatus(HttpStatus.OK)
-    public ParticipationRequestDto update(@PathVariable Long userId, @PathVariable Long requestsId) {
+    public ResponseEntity<ParticipationRequestDto> update(@PathVariable Long userId, @PathVariable Long requestsId) {
         log.info("Получен запрос PATCH /users/{}/requests/{requestsId}/cancel" +
                 " c отменой запроса id = {}", userId, requestsId);
-        return service.update(userId, requestsId);
+        return new ResponseEntity<>(service.update(userId, requestsId), HttpStatus.OK);
     }
 }

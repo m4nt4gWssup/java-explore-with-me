@@ -3,6 +3,7 @@ package ru.practicum.ewm.adminService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminService.service.compilation.AdminCompilationService;
@@ -20,24 +21,22 @@ public class AdminCompilationsController {
     private final AdminCompilationService service;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto save(@RequestBody @Valid NewCompilationDto newCompilationDto) {
+    public ResponseEntity<CompilationDto> save(@RequestBody @Valid NewCompilationDto newCompilationDto) {
         log.info("Получен запрос POST /admin/compilations c новой подборкой: {}", newCompilationDto.getTitle());
-        return service.save(newCompilationDto);
+        return new ResponseEntity<>(service.save(newCompilationDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{compId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long compId) {
+    public ResponseEntity<Void> delete(@PathVariable Long compId) {
         log.info("Получен запрос DELETE /admin/compilations/{}", compId);
         service.delete(compId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{compId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CompilationDto update(@PathVariable Long compId,
-                                 @RequestBody @Valid UpdateCompilationRequest updateCompilationRequest) {
+    public ResponseEntity<CompilationDto> update(@PathVariable Long compId,
+                                                 @RequestBody @Valid UpdateCompilationRequest updateCompilationRequest) {
         log.info("Получен запрос PATCH /admin/compilations/{} на изменение подборки.", compId);
-        return service.update(compId, updateCompilationRequest);
+        return new ResponseEntity<>(service.update(compId, updateCompilationRequest), HttpStatus.OK);
     }
 }

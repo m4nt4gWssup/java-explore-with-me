@@ -3,7 +3,9 @@ package ru.practicum.ewm.adminService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminService.dto.RequestParamForEvent;
 import ru.practicum.ewm.adminService.service.event.AdminEventsService;
@@ -22,19 +24,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/admin/events")
+@Validated
 public class AdminEventsController {
 
     public final AdminEventsService service;
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    public List<EventFullDto> getAll(@RequestParam(required = false) List<Long> users,
-                                     @RequestParam(required = false) List<String> states,
-                                     @RequestParam(required = false) List<Long> categories,
-                                     @RequestParam(required = false) LocalDateTime rangeStart,
-                                     @RequestParam(required = false) LocalDateTime rangeEnd,
-                                     @RequestParam(defaultValue = "0") @PositiveOrZero int from,
-                                     @RequestParam(defaultValue = "10") @Positive int size) {
+    public ResponseEntity<List<EventFullDto>> getAll(@RequestParam(required = false) List<Long> users,
+                                                     @RequestParam(required = false) List<String> states,
+                                                     @RequestParam(required = false) List<Long> categories,
+                                                     @RequestParam(required = false) LocalDateTime rangeStart,
+                                                     @RequestParam(required = false) LocalDateTime rangeEnd,
+                                                     @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                     @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получен запрос GET /admin/events");
 
         List<State> statesEnum = null;
@@ -51,14 +53,13 @@ public class AdminEventsController {
                 .from(from)
                 .size(size)
                 .build();
-        return service.getAll(param);
+        return new ResponseEntity<>(service.getAll(param), HttpStatus.OK);
     }
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFullDto update(@PathVariable Long eventId,
-                               @RequestBody UpdateEventAdminRequest updateEvent) {
+    public ResponseEntity<EventFullDto> update(@PathVariable Long eventId,
+                                               @RequestBody UpdateEventAdminRequest updateEvent) {
         log.info("Получен запрос PATCH /admin/events/{} на изменение события.", eventId);
-        return service.update(eventId, updateEvent);
+        return new ResponseEntity<>(service.update(eventId, updateEvent), HttpStatus.OK);
     }
 }

@@ -3,9 +3,13 @@ package ru.practicum.ewm.publicService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.ewm.baseService.dto.event.EventFullDto;
 import ru.practicum.ewm.baseService.dto.event.EventShortDto;
 import ru.practicum.ewm.publicService.dto.RequestParamForEvent;
@@ -28,17 +32,16 @@ public class PublicEventsController {
     public final PublicEventsService eventsService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public Set<EventShortDto> getAll(@RequestParam(required = false) String text,
-                                     @RequestParam(required = false) List<Long> categories,
-                                     @RequestParam(required = false) Boolean paid,
-                                     @RequestParam(required = false) LocalDateTime rangeStart,
-                                     @RequestParam(required = false) LocalDateTime rangeEnd,
-                                     @RequestParam(defaultValue = "false") Boolean onlyAvailable,
-                                     @RequestParam(defaultValue = "EVENT_DATE") String sort,
-                                     @RequestParam(defaultValue = "0") @PositiveOrZero int from,
-                                     @RequestParam(defaultValue = "10") @Positive int size,
-                                     HttpServletRequest request) {
+    public ResponseEntity<Set<EventShortDto>> getAll(@RequestParam(required = false) String text,
+                                                     @RequestParam(required = false) List<Long> categories,
+                                                     @RequestParam(required = false) Boolean paid,
+                                                     @RequestParam(required = false) LocalDateTime rangeStart,
+                                                     @RequestParam(required = false) LocalDateTime rangeEnd,
+                                                     @RequestParam(defaultValue = "false") Boolean onlyAvailable,
+                                                     @RequestParam(defaultValue = "EVENT_DATE") String sort,
+                                                     @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                     @RequestParam(defaultValue = "10") @Positive int size,
+                                                     HttpServletRequest request) {
         log.info("Получен запрос GET /events c параметрами: text = {}, categories = {}, paid = {}, rangeStart = {}, " +
                         "rangeEnd = {}, onlyAvailable = {}, sort = {}, from = {}, size = {}", text, categories, paid,
                 rangeStart, rangeEnd, onlyAvailable, sort, from, size);
@@ -54,13 +57,12 @@ public class PublicEventsController {
                 .size(size)
                 .request(request)
                 .build();
-        return eventsService.getAll(param);
+        return new ResponseEntity<>(eventsService.getAll(param), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public EventFullDto get(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<EventFullDto> get(@PathVariable Long id, HttpServletRequest request) {
         log.info("Получен запрос GET /events/{}", id);
-        return eventsService.get(id, request);
+        return new ResponseEntity<>(eventsService.get(id, request), HttpStatus.OK);
     }
 }

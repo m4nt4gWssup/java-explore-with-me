@@ -3,7 +3,9 @@ package ru.practicum.ewm.adminService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminService.service.user.AdminUserService;
 import ru.practicum.ewm.baseService.dto.user.NewUserRequest;
@@ -18,30 +20,29 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/admin/users")
+@Validated
 public class AdminUsersController {
 
     private final AdminUserService service;
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<UserDto> getAll(@RequestParam(required = false) List<Long> ids,
-                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
-                                @RequestParam(defaultValue = "10") @Positive Integer size) {
+    @GetMapping()
+    public ResponseEntity<List<UserDto>> getAll(@RequestParam(required = false) List<Long> ids,
+                                                @RequestParam(defaultValue = "0") @PositiveOrZero Integer from,
+                                                @RequestParam(defaultValue = "10") @Positive Integer size) {
         log.info("Получен запрос GET /admin/users");
-        return service.getAll(ids, from, size);
+        return new ResponseEntity<>(service.getAll(ids, from, size), HttpStatus.OK);
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDto save(@RequestBody @Valid NewUserRequest newUserRequest) {
+    @PostMapping()
+    public ResponseEntity<UserDto> save(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Получен запрос POST /admin/users c новым пользователем: {}", newUserRequest.getEmail());
-        return service.save(newUserRequest);
+        return new ResponseEntity<>(service.save(newUserRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{userId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long userId) {
+    public ResponseEntity<Void> delete(@PathVariable Long userId) {
         log.info("Получен запрос DELETE /admin/users/{}", userId);
         service.delete(userId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -3,8 +3,12 @@ package ru.practicum.ewm.publicService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.practicum.ewm.baseService.dto.Category.CategoryDto;
 import ru.practicum.ewm.publicService.service.category.PublicCategoriesService;
 
@@ -19,17 +23,15 @@ public class PublicCategoriesController {
     public final PublicCategoriesService categoriesService;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getAll(@RequestParam(defaultValue = "0") int from,
-                                    @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<CategoryDto>> getAll(@RequestParam(defaultValue = "0") int from,
+                                                    @RequestParam(defaultValue = "10") int size) {
         log.info("Получен запрос GET /categories c параметрами: from = {}, size = {}", from, size);
-        return categoriesService.getAll(from, size);
+        return new ResponseEntity<>(categoriesService.getAll(from, size), HttpStatus.OK);
     }
 
     @GetMapping("/{catId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CategoryDto get(@PathVariable Long catId) {
+    public ResponseEntity<CategoryDto> get(@PathVariable Long catId) {
         log.info("Получен запрос GET /categories/{}", catId);
-        return categoriesService.get(catId);
+        return new ResponseEntity<>(categoriesService.get(catId), HttpStatus.OK);
     }
 }

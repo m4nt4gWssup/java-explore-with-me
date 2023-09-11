@@ -2,6 +2,7 @@ package ru.practicum.mapper;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.dto.HitViewDto;
+import ru.practicum.model.ViewStats;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,11 +10,23 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class HitViewMapper {
 
-    public HitViewDto toDto(HitViewDto hitDto) {
-        return new HitViewDto(hitDto.getApp(), hitDto.getUri(), hitDto.getHits());
+    public static ViewStats toEntity(HitViewDto dto) {
+        return ViewStats.builder()
+                .app(dto.getApp())
+                .uri(dto.getUri())
+                .hits(dto.getHits())
+                .build();
     }
 
-    public List<HitViewDto> toDtoList(List<HitViewDto> viewHits) {
-        return viewHits.stream().map(HitViewMapper::toDto).collect(Collectors.toList());
+    public static HitViewDto toDto(ViewStats entity) {
+        return HitViewDto.builder()
+                .app(entity.getApp())
+                .uri(entity.getUri())
+                .hits(entity.getHits())
+                .build();
+    }
+
+    public static List<HitViewDto> toDtoList(List<ViewStats> viewStats) {
+        return viewStats.stream().map(HitViewMapper::toDto).collect(Collectors.toList());
     }
 }

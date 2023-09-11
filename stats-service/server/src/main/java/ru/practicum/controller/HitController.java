@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.HitViewDto;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.service.HitService;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class HitController {
                                 @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
                                 @RequestParam(required = false) List<String> uris,
                                 @RequestParam(defaultValue = "false") Boolean unique) {
-
+        validateParamForGetMapping(start, end);
         log.info("Получен запрос GET /stats");
         return hitService.get(start, end, uris, unique);
     }
@@ -35,5 +36,11 @@ public class HitController {
     public HitDto create(@RequestBody HitDto dto) {
         log.info("Получен запрос POST /hit");
         return hitService.create(dto);
+    }
+
+    private void validateParamForGetMapping(LocalDateTime startDate, LocalDateTime endDate) {
+        if (startDate.isAfter(endDate)) {
+            throw new BadRequestException("start date is after end date");
+        }
     }
 }

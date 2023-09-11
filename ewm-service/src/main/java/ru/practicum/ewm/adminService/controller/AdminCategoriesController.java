@@ -3,6 +3,7 @@ package ru.practicum.ewm.adminService.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.ewm.adminService.service.category.AdminCategoriesService;
@@ -20,24 +21,22 @@ public class AdminCategoriesController {
     public final AdminCategoriesService service;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CategoryDto create(@RequestBody @Valid NewCategoryDto dto) {
+    public ResponseEntity<CategoryDto> create(@RequestBody @Valid NewCategoryDto dto) {
         log.info("Получен запрос POST /admin/categories c новой категорией: {}", dto.getName());
-        return service.create(dto);
+        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{catId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long catId) {
+    public ResponseEntity<Void> delete(@PathVariable Long catId) {
         log.info("Получен запрос DELETE /admin/categories/{}", catId);
         service.delete(catId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{catId}")
-    @ResponseStatus(HttpStatus.OK)
-    public CategoryDto update(@RequestBody @Valid NewCategoryDto dto,
-                              @PathVariable Long catId) {
+    public ResponseEntity<CategoryDto> update(@RequestBody @Valid NewCategoryDto dto,
+                                              @PathVariable Long catId) {
         log.info("Получен запрос PATCH /admin/categories/{} на изменение категориии: {}", catId, dto.getName());
-        return service.update(dto, catId);
+        return new ResponseEntity<>(service.update(dto, catId), HttpStatus.OK);
     }
 }

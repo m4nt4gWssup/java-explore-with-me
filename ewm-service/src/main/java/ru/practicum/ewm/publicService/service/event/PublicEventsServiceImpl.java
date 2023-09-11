@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.client.HitClient;
+import ru.practicum.HitClient;
 import ru.practicum.dto.HitDto;
 import ru.practicum.ewm.baseService.dao.EventRepository;
 import ru.practicum.ewm.baseService.dto.event.EventFullDto;
