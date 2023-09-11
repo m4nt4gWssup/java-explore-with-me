@@ -1,11 +1,11 @@
-package explorewithme;
+package ru.practicum;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EwmServiceApp {
+public class StatisticsClientApp {
     public static void main(String[] args) {
-        SpringApplication.run(EwmServiceApp.class, args);
+        SpringApplication.run(StatisticsClientApp.class, args);
     }
 }
