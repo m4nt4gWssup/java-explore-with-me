@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface HitRepository extends JpaRepository<Hit, Long> {
-    @Query(" SELECT new ru.practicum.dto.HitViewDto(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
+    @Query(" SELECT new ru.practicum.dto.ViewStatsDto(h.app, h.uri, COUNT(DISTINCT h.ip)) " +
             "FROM Hit h " +
             "WHERE h.timestamp BETWEEN :start AND :end " +
             "AND (h.uri IN (:uris) OR :uris is NULL) " +
@@ -20,7 +20,7 @@ public interface HitRepository extends JpaRepository<Hit, Long> {
     List<ViewStats> findUniqueViewStats(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end,
                                         @Param("uris") List<String> uris, PageRequest pageable);
 
-    @Query(" SELECT new ru.practicum.dto.HitViewDto(h.app, h.uri, COUNT(h.ip)) " +
+    @Query(" SELECT new ru.practicum.dto.ViewStatsDto(h.app, h.uri, COUNT(h.ip)) " +
             "FROM Hit h " +
             "WHERE h.timestamp BETWEEN :start AND :end " +
             "AND (h.uri IN (:uris) OR :uris is NULL) " +

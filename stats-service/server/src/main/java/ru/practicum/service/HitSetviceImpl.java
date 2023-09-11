@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.dto.HitDto;
-import ru.practicum.dto.HitViewDto;
+import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.mapper.HitMapper;
-import ru.practicum.mapper.HitViewMapper;
+import ru.practicum.mapper.ViewStatsMapper;
 import ru.practicum.repository.HitRepository;
 
 import javax.transaction.Transactional;
@@ -25,16 +25,16 @@ public class HitSetviceImpl implements HitService {
     @Transactional
     public HitDto create(HitDto hitDto) {
         log.info("Создание информации о посещении с данными: {}", hitDto);
-        return HitMapper.toDto(hitRepository.save(HitMapper.toEntity(hitDto)));
+        return HitMapper.toDto(hitRepository.save(HitMapper.toHit(hitDto)));
     }
 
     @Override
-    public List<HitViewDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+    public List<ViewStatsDto> get(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
         PageRequest pageable = PageRequest.of(0, 10);
         if (unique) {
-            return HitViewMapper.toDtoList(hitRepository.findUniqueViewStats(start, end, uris, pageable));
+            return ViewStatsMapper.toDtoList(hitRepository.findUniqueViewStats(start, end, uris, pageable));
         } else {
-            return HitViewMapper.toDtoList(hitRepository.findViewStats(start, end, uris, pageable));
+            return ViewStatsMapper.toDtoList(hitRepository.findViewStats(start, end, uris, pageable));
         }
     }
 }

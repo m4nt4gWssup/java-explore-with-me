@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public final class CategoryMapper {
 
-    public Category toEntity(NewCategoryDto dto) {
+    public Category toCategory(NewCategoryDto dto) {
         return Category.builder()
                 .name(dto.getName()).build();
     }

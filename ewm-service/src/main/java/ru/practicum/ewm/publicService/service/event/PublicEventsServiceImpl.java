@@ -42,10 +42,8 @@ public class PublicEventsServiceImpl implements PublicEventsService {
     public Set<EventShortDto> getAll(RequestParamForEvent param) {
         CustomPageRequest pageable = createPageable(param.getSort(), param.getFrom(), param.getSize());
         EventSearchCriteria eventSearchCriteria = createCriteria(param);
-
         Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository
                 .findAllWithFilters(pageable, eventSearchCriteria).toSet());
-
         log.info("Получен список событий размером: {}", eventShorts.size());
         saveEndpointHit(param.getRequest());
         return eventShorts;

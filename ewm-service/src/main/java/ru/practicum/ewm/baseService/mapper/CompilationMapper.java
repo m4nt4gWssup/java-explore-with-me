@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public final class CompilationMapper {
 
-    public Compilation toEntity(NewCompilationDto dto) {
+    public Compilation toCompilation(NewCompilationDto dto) {
         return Compilation.builder()
                 .pinned(dto.isPinned())
                 .title(dto.getTitle())

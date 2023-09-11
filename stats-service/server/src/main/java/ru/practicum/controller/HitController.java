@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.dto.HitDto;
-import ru.practicum.dto.HitViewDto;
+import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.service.HitService;
 
@@ -22,10 +22,10 @@ public class HitController {
 
     @GetMapping("/stats")
     @ResponseStatus(HttpStatus.OK)
-    public List<HitViewDto> get(@RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime start,
-                                @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
-                                @RequestParam(required = false) List<String> uris,
-                                @RequestParam(defaultValue = "false") Boolean unique) {
+    public List<ViewStatsDto> get(@RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime start,
+                                  @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
+                                  @RequestParam(required = false) List<String> uris,
+                                  @RequestParam(defaultValue = "false") Boolean unique) {
         validateParamForGetMapping(start, end);
         log.info("Получен запрос GET /stats");
         return hitService.get(start, end, uris, unique);

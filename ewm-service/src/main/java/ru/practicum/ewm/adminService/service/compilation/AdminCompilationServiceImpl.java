@@ -31,7 +31,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     @Transactional
     @Override
     public CompilationDto save(NewCompilationDto newCompilationDto) {
-        Compilation compilation = CompilationMapper.toEntity(newCompilationDto);
+        Compilation compilation = CompilationMapper.toCompilation(newCompilationDto);
         compilation.setEvents(findEvents(newCompilationDto.getEvents()));
         try {
             compilation = compilationRepository.save(compilation);

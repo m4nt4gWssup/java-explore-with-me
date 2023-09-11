@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewm.baseService.exception.ConditionsNotMetException;
 import ru.practicum.ewm.baseService.exception.ConflictException;
 import ru.practicum.ewm.baseService.exception.NotFoundException;
+import ru.practicum.ewm.baseService.exception.ValidationException;
 import ru.practicum.ewm.baseService.exception.error.ApiError;
 
 import javax.validation.ConstraintViolationException;
@@ -67,6 +68,15 @@ public class ErrorHandler {
 
         return new ApiError(
                 HttpStatus.BAD_REQUEST.toString(),
+                "Некорректно составлен запрос.",
+                e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError expValidation(final ValidationException e) {
+        log.error("ERROR 400: {}", e.getMessage());
+        return new ApiError(HttpStatus.BAD_REQUEST.toString(),
                 "Некорректно составлен запрос.",
                 e.getMessage());
     }

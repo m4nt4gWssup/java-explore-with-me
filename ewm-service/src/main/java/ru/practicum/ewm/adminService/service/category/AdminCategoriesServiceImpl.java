@@ -29,7 +29,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     @Transactional
     @Override
     public CategoryDto create(NewCategoryDto dto) {
-        Category category = CategoryMapper.toEntity(dto);
+        Category category = CategoryMapper.toCategory(dto);
         try {
             category = categoriesRepository.save(category);
         } catch (DataIntegrityViolationException e) {
@@ -53,7 +53,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     @Transactional
     @Override
     public CategoryDto update(NewCategoryDto dto, Long catId) {
-        Category categoryUpdate = CategoryMapper.toEntity(dto);
+        Category categoryUpdate = CategoryMapper.toCategory(dto);
         Category categoryTarget = get(catId);
 
         try {

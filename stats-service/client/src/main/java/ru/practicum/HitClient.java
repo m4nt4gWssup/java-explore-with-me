@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class HitClient extends BaseClient {
     @Autowired
-    public HitClient(@Value("${stats-service.url}") String serverUrl, RestTemplateBuilder builder) {
+    public HitClient(@Value("${http://stats-service:9090}") String serverUrl, RestTemplateBuilder builder) {
         super(builder.uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new).build());
     }

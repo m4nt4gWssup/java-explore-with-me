@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import ru.practicum.HitClient;
 
 @Configuration
-public class StatsClientConfig {
+public class HitClientConfig {
 
     @Value("${stats-service.url}")
     private String url;

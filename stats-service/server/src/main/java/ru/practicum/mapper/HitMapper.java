@@ -7,7 +7,7 @@ import ru.practicum.model.Hit;
 @UtilityClass
 public class HitMapper {
 
-    public static Hit toEntity(HitDto dto) {
+    public Hit toHit(HitDto dto) {
         return Hit.builder()
                 .app(dto.getApp())
                 .ip(dto.getIp())
@@ -17,7 +17,7 @@ public class HitMapper {
 
     }
 
-    public static HitDto toDto(Hit entity) {
+    public HitDto toDto(Hit entity) {
         return HitDto.builder()
                 .id(entity.getId())
                 .app(entity.getApp())
