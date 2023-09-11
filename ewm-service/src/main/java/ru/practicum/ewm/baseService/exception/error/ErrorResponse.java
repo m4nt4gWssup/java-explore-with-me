@@ -6,13 +6,13 @@ import ru.practicum.ewm.baseService.mapper.DateTimeMapper;
 import java.time.LocalDateTime;
 
 @Getter
-public class ApiError {
+public class ErrorResponse {
     private final String status;
     private final String reason;
     private final String message;
     private final String timestamp;
 
-    public ApiError(String status, String reason, String message) {
+    public ErrorResponse(String status, String reason, String message) {
         this.status = status;
         this.reason = reason;
         this.message = message;

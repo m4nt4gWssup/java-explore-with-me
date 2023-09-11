@@ -12,7 +12,6 @@ import ru.practicum.ewm.baseService.dao.EventRepository;
 import ru.practicum.ewm.baseService.dto.event.EventFullDto;
 import ru.practicum.ewm.baseService.dto.event.EventShortDto;
 import ru.practicum.ewm.baseService.enums.State;
-import ru.practicum.ewm.baseService.exception.ConflictException;
 import ru.practicum.ewm.baseService.exception.NotFoundException;
 import ru.practicum.ewm.baseService.mapper.EventMapper;
 import ru.practicum.ewm.baseService.model.Event;
@@ -55,13 +54,12 @@ public class PublicEventsServiceImpl implements PublicEventsService {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие не найдено с id = %s", id)));
         if (!event.getState().equals(State.PUBLISHED)) {
-            throw new ConflictException(String.format("Событие с id=%d не опубликовано", id));
+            throw new NotFoundException(String.format("Событие с id=%d не опубликовано", id));
         }
-
         saveEndpointHit(request);
         log.info("Получено событие: {}", event.getId());
         event.setViews(event.getViews() + 1);
-        eventRepository.flush();
+        eventRepository.save(event);
         return EventMapper.toEventFullDto(event);
     }
 

@@ -10,7 +10,7 @@ import ru.practicum.ewm.baseService.exception.ConditionsNotMetException;
 import ru.practicum.ewm.baseService.exception.ConflictException;
 import ru.practicum.ewm.baseService.exception.NotFoundException;
 import ru.practicum.ewm.baseService.exception.ValidationException;
-import ru.practicum.ewm.baseService.exception.error.ApiError;
+import ru.practicum.ewm.baseService.exception.error.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Objects;
@@ -21,9 +21,9 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleForbiddenException(final ConflictException e) {
+    public ErrorResponse handleForbiddenException(final ConflictException e) {
         log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ApiError(
+        return new ErrorResponse(
                 HttpStatus.CONFLICT.toString(),
                 "Целостность нарушена.",
                 e.getMessage());
@@ -31,9 +31,9 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ApiError handleForbiddenException(final ConditionsNotMetException e) {
+    public ErrorResponse handleForbiddenException(final ConditionsNotMetException e) {
         log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ApiError(
+        return new ErrorResponse(
                 HttpStatus.CONFLICT.toString(),
                 "Для запрошенной операции условия не выполняются.",
                 e.getMessage());
@@ -41,9 +41,9 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFoundException(final NotFoundException e) {
+    public ErrorResponse handleNotFoundException(final NotFoundException e) {
         log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ApiError(
+        return new ErrorResponse(
                 HttpStatus.NOT_FOUND.toString(),
                 "Требуемый объект не найден.",
                 e.getMessage());
@@ -51,11 +51,11 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleBlankException(final MethodArgumentNotValidException e) {
+    public ErrorResponse handleBlankException(final MethodArgumentNotValidException e) {
         log.error(e.getLocalizedMessage(), e.getMessage());
         String field = Objects.requireNonNull(e.getFieldError()).getField();
 
-        return new ApiError(
+        return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.toString(),
                 "Некорректно составлен запрос.",
                 String.format("Поле: %s. Ошибка: не должно быть пустым. Значение: %s", field, e.getFieldValue(field)));
@@ -63,10 +63,10 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleConstraintViolationException(final ConstraintViolationException e) {
+    public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
         log.error(e.getLocalizedMessage(), e.getMessage());
 
-        return new ApiError(
+        return new ErrorResponse(
                 HttpStatus.BAD_REQUEST.toString(),
                 "Некорректно составлен запрос.",
                 e.getMessage());
@@ -74,9 +74,10 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError expValidation(final ValidationException e) {
+    public ErrorResponse expValidation(final ValidationException e) {
         log.error("ERROR 400: {}", e.getMessage());
-        return new ApiError(HttpStatus.BAD_REQUEST.toString(),
+        return new ErrorResponse(
+                HttpStatus.BAD_REQUEST.toString(),
                 "Некорректно составлен запрос.",
                 e.getMessage());
     }

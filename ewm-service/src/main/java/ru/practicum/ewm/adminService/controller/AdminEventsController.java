@@ -13,6 +13,7 @@ import ru.practicum.ewm.baseService.dto.event.EventFullDto;
 import ru.practicum.ewm.baseService.dto.event.UpdateEventAdminRequest;
 import ru.practicum.ewm.baseService.enums.State;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
@@ -58,7 +59,7 @@ public class AdminEventsController {
 
     @PatchMapping("/{eventId}")
     public ResponseEntity<EventFullDto> update(@PathVariable Long eventId,
-                                               @RequestBody UpdateEventAdminRequest updateEvent) {
+                                               @RequestBody @Valid UpdateEventAdminRequest updateEvent) {
         log.info("Получен запрос PATCH /admin/events/{} на изменение события.", eventId);
         return new ResponseEntity<>(service.update(eventId, updateEvent), HttpStatus.OK);
     }

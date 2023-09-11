@@ -48,7 +48,11 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     public Set<EventShortDto> getAll(Long userId, Integer from, Integer size) {
         CustomPageRequest pageRequest = new CustomPageRequest(from, size,
                 Sort.by(Sort.Direction.ASC, "id"));
-        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository.findAll(pageRequest).toSet());
+        Set<Event> newEvent = eventRepository.findAll(pageRequest).toSet();
+        for (Event event : newEvent) {
+            event.setRequestModeration(true);
+        }
+        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(newEvent);
         log.info("Получен список событий размером: {}", eventShorts.size());
         return eventShorts;
     }

@@ -64,7 +64,7 @@ public class PrivateEventsController {
     @PatchMapping("/{eventId}/requests")
     public ResponseEntity<EventRequestStatusUpdateResult> updateRequestStatus(@PathVariable Long userId,
                                                                               @PathVariable Long eventId,
-                                                                              @RequestBody EventRequestStatusUpdateRequest request) {
+                                                                              @RequestBody @Valid EventRequestStatusUpdateRequest request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
                 " на обновление статуса события id = {}: {}", userId, eventId, request);
         if (Status.from(request.getStatus()) == null) {
