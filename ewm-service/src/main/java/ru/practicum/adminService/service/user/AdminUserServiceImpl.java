@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.baseService.dao.UserRepository;
 import ru.practicum.baseService.dto.user.NewUserRequest;
 import ru.practicum.baseService.dto.user.UserDto;
-import ru.practicum.baseService.exception.ConflictException;
+import ru.practicum.baseService.exception.ValidationException;
 import ru.practicum.baseService.mapper.UserMapper;
 import ru.practicum.baseService.model.User;
 import ru.practicum.baseService.util.page.CustomPageRequest;
@@ -41,10 +41,17 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public UserDto save(NewUserRequest dto) {
         User user = UserMapper.toEntity(dto);
-        try {
-            user = userRepository.save(user);
-        } catch (DataIntegrityViolationException e) {
-            throw new ConflictException("Данный email уже занят", e);
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            throw new ValidationException("Нужно заполнить имя!");
+        }
+        if (user.getEmail() == null || !user.getEmail().contains("@")) {
+            throw new ValidationException("Почта некорректна");
+        }
+        if (user.getName().length() < 2 || user.getName().length() > 250) {
+            throw new ValidationException("Имя слишком длинное или короткое!");
+        }
+        if (user.getEmail().length() < 6 || user.getEmail().length() > 254 ) {
+            throw new ValidationException("Почта слишком длинная или короткая!");
         }
         log.info("Добавлен пользователь: {}", user.getEmail());
         return UserMapper.toUserDto(user);
