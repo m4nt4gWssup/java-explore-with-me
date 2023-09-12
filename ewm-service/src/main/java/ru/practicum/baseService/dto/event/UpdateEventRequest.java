@@ -2,9 +2,8 @@ package ru.practicum.baseService.dto.event;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.baseService.dto.location.LocationDto;
 import ru.practicum.baseService.util.notblanknull.NotBlankNull;
@@ -15,8 +14,7 @@ import java.time.LocalDateTime;
 
 import static ru.practicum.baseService.util.constants.Constants.DATE_FORMAT;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class UpdateEventRequest {
