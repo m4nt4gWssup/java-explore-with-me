@@ -71,9 +71,12 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     public List<EventFullDto> getAll(RequestParamForEvent param) {
         CustomPageRequest pageable = new CustomPageRequest(param.getFrom(), param.getSize(),
                 Sort.by(Sort.Direction.ASC, "id"));
+        log.info("Выполняется запрос с параметрами: пользователи = {}, статусы = {}, категории = {}, начало диапазона = {}, конец диапазона = {}",
+                param.getUsers(), param.getStates(), param.getCategories(), param.getRangeStart(), param.getRangeEnd());
         List<Event> events = eventRepository.findEventsByParams(
                 param.getUsers(), param.getStates(), param.getCategories(), param.getRangeStart(),
                 param.getRangeEnd(), pageable);
+        log.info("Получено {} событий из запроса", events.size());
         return events.stream()
                 .map(EventMapper::toEventFullDto)
                 .collect(Collectors.toList());
