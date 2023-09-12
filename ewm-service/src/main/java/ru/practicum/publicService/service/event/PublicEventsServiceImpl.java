@@ -42,7 +42,7 @@ public class PublicEventsServiceImpl implements PublicEventsService {
             }
         }
         EventSearchCriteria eventSearchCriteria = createCriteria(param);
-        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository
+        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoSet(eventRepository
                 .findAllWithFilters(pageable, eventSearchCriteria).toSet());
         log.info("Получен список событий размером: {}", eventShorts.size());
         return eventShorts;

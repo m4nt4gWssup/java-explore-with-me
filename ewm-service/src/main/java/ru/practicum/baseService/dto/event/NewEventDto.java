@@ -31,10 +31,10 @@ public class NewEventDto {
     @NotNull
     @Valid
     private LocationDto location;
-    private boolean paid;
+    private Boolean paid;
     @PositiveOrZero
     private long participantLimit;
-    private boolean requestModeration;
+    private Boolean requestModeration;
     @Length(min = 3, max = 120)
     @NotBlank
     private String title;

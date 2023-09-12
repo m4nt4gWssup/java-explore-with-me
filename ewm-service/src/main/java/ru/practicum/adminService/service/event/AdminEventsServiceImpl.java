@@ -38,7 +38,7 @@ public class AdminEventsServiceImpl implements AdminEventsService {
         if (dto.getEventDate() != null) {
             checkEventDate(dto.getEventDate());
         }
-        Event eventUpdate = EventMapper.toEntity(dto);
+        Event eventUpdate = EventMapper.toEvent(dto);
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие с id = %s не найдено", eventId)));
         if (dto.getDescription() != null) {
@@ -73,7 +73,7 @@ public class AdminEventsServiceImpl implements AdminEventsService {
         } else if (event.getState().equals(State.CANCELED)) {
             throw new ConflictException("Невозможно опубликовать событие, так как оно находится " +
                     "в неправильном статусе: CANCELED");
-        } else {
+        } else if (dto.getStateAction() != null) {
             if (dto.getStateAction().toString().equals(AdminStateAction.PUBLISH_EVENT.toString())) {
                 event.setState(State.PUBLISHED);
             }
@@ -95,6 +95,12 @@ public class AdminEventsServiceImpl implements AdminEventsService {
     public List<EventFullDto> getAll(RequestParamForEvent param) {
         CustomPageRequest pageable = new CustomPageRequest(param.getFrom(), param.getSize(),
                 Sort.by(Sort.Direction.ASC, "id"));
+        if (param.getRangeStart() == null) {
+            param.setRangeStart(LocalDateTime.now());
+        }
+        if (param.getRangeEnd() == null) {
+            param.setRangeEnd(LocalDateTime.now().plusYears(10));
+        }
         List<Event> events = eventRepository.findEventsByParams(
                 param.getUsers(), param.getStates(), param.getCategories(), param.getRangeStart(),
                 param.getRangeEnd(), pageable);

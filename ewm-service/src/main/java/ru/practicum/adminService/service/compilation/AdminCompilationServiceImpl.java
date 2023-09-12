@@ -55,8 +55,10 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     @Transactional
     @Override
     public CompilationDto update(Long compId, UpdateCompilationRequest dto) {
-        if (dto.getTitle().length() > 50) {
-            throw new ValidationException("Заголовок не должен превышать 50 символов");
+        if (dto.getTitle() != null) {
+            if (dto.getTitle().length() > 50) {
+                throw new ValidationException("Заголовок не должен превышать 50 символов");
+            }
         }
         Compilation compilationTarget = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException(String.format("Подборка с id = %s не найдена", compId)));

@@ -4,10 +4,10 @@ import ru.practicum.baseService.dto.event.*;
 import ru.practicum.baseService.dto.request.ParticipationRequestDto;
 
 import java.util.List;
-import java.util.Set;
 
 public interface PrivateEventsService {
-    Set<EventShortDto> getAll(Long userId, Integer from, Integer size);
+
+    List<EventShortDto> getAll(Long userId, Integer from, Integer size);
 
     EventFullDto get(Long userId, Long eventId);
 
@@ -17,5 +17,6 @@ public interface PrivateEventsService {
 
     EventFullDto update(Long userId, Long eventId, UpdateEventUserRequest eventDto);
 
-    EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request);
+    EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest
+            request);
 }

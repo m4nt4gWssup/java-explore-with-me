@@ -44,13 +44,14 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
     @Transactional
     @Override
     public ParticipationRequestDto create(Long userId, Long eventId) {
-        final Event event = eventRepository.findById(eventId)
+        Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие с id = %s не найдено", eventId)));
-        final User user = userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id = %s не найден", userId)));
         Request userRequest = new Request();
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
-            throw new ConflictException(String.format("Запрос с requesterId=%d и eventId=%d уже существует", userId, eventId));
+            throw new ConflictException(String.format("Запрос с requesterId=%d и eventId=%d уже существует", userId,
+                    eventId));
         }
         if (userId.equals(event.getInitiator().getId())) {
             throw new ConflictException(String.format("Пользователь с id=%d не должен совпадать с инициатором", userId));
@@ -90,6 +91,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
             userRequest.setStatus(Status.PENDING);
             eventRepository.save(event);
         }
+        // TODO
         return RequestMapper.toParticipationRequestDto(requestRepository.save(userRequest));
     }
 

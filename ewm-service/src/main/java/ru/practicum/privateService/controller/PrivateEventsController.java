@@ -14,7 +14,6 @@ import ru.practicum.privateService.service.event.PrivateEventsService;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,9 +24,9 @@ public class PrivateEventsController {
     public final PrivateEventsService service;
 
     @GetMapping
-    public ResponseEntity<Set<EventShortDto>> getAll(@PathVariable Long userId,
-                                                     @RequestParam(defaultValue = "0") Integer from,
-                                                     @RequestParam(defaultValue = "10") Integer size) {
+    public ResponseEntity<List<EventShortDto>> getAll(@PathVariable Long userId,
+                                                      @RequestParam(defaultValue = "0") Integer from,
+                                                      @RequestParam(defaultValue = "10") Integer size) {
         log.info("Получен запрос GET /users{}/events c параметрами: from = {}, size = {}", userId, from, size);
         return new ResponseEntity<>(service.getAll(userId, from, size), HttpStatus.OK);
     }
@@ -64,7 +63,9 @@ public class PrivateEventsController {
     @PatchMapping("/{eventId}/requests")
     public ResponseEntity<EventRequestStatusUpdateResult> updateRequestStatus(@PathVariable Long userId,
                                                                               @PathVariable Long eventId,
-                                                                              @RequestBody @Valid EventRequestStatusUpdateRequest request) {
+                                                                              @RequestBody
+                                                                              @Valid EventRequestStatusUpdateRequest
+                                                                                      request) {
         log.info("Получен запрос PATCH /users/{}/events/{eventId}/requests" +
                 " на обновление статуса события id = {}: {}", userId, eventId, request);
         if (Status.from(request.getStatus()) == null) {

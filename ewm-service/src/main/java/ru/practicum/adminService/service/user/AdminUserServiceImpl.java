@@ -42,7 +42,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Transactional
     @Override
     public UserDto save(NewUserRequest dto) {
-        User user = UserMapper.toEntity(dto);
+        User user = UserMapper.toUser(dto);
         Optional<User> existingUser = userRepository.findByName(dto.getName());
         if (existingUser.isPresent()) {
             throw new ConflictException("Пользователь с таким именем уже существует");

@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public final class UserMapper {
 
-    public User toEntity(NewUserRequest dto) {
+    public User toUser(NewUserRequest dto) {
         return User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())

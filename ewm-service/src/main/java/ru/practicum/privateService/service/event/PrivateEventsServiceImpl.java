@@ -3,7 +3,7 @@ package ru.practicum.privateService.service.event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.baseService.dao.CategoriesRepository;
@@ -21,11 +21,9 @@ import ru.practicum.baseService.mapper.EventMapper;
 import ru.practicum.baseService.mapper.RequestMapper;
 import ru.practicum.baseService.model.Event;
 import ru.practicum.baseService.model.Request;
-import ru.practicum.baseService.util.page.CustomPageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static ru.practicum.baseService.enums.Status.CONFIRMED;
@@ -45,16 +43,13 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     private final CategoriesRepository categoriesRepository;
 
     @Override
-    public Set<EventShortDto> getAll(Long userId, Integer from, Integer size) {
-        CustomPageRequest pageRequest = new CustomPageRequest(from, size,
-                Sort.by(Sort.Direction.ASC, "id"));
-        Set<Event> newEvent = eventRepository.findAll(pageRequest).toSet();
-        for (Event event : newEvent) {
-            event.setRequestModeration(true);
-        }
-        Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(newEvent);
-        log.info("Получен список событий размером: {}", eventShorts.size());
-        return eventShorts;
+
+    public List<EventShortDto> getAll(Long userId, Integer from, Integer size) {
+
+        log.info("Получен список событий размером:");
+        return EventMapper.toEventShortDtoList(eventRepository.findByInitiator(userRepository.findById(userId)
+                        .orElseThrow(() -> new NotFoundException("Нет такого пользователя")),
+                PageRequest.of(from / size, size)).toList());
     }
 
     @Override
@@ -79,7 +74,16 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     @Override
     public EventFullDto create(Long userId, NewEventDto eventDto) {
         checkEventDate(eventDto.getEventDate());
-        Event event = EventMapper.toEntity(eventDto);
+        Event event = EventMapper.toEvent(eventDto);
+        if (event.getPaid() == null) {
+            event.setPaid(false);
+        }
+        if (event.getParticipantLimit() == null) {
+            event.setParticipantLimit(0L);
+        }
+        if (event.getRequestModeration() == null) {
+            event.setRequestModeration(true);
+        }
         event.setCategory(categoriesRepository.findById(eventDto.getCategory())
                 .orElseThrow(() -> new NotFoundException(String.format("Категория с id=%d не найдена",
                         eventDto.getCategory()))));
@@ -169,7 +173,8 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
 
     @Transactional
     @Override
-    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
+    public EventRequestStatusUpdateResult updateRequestStatus(Long userId, Long eventId,
+                                                              EventRequestStatusUpdateRequest request) {
         List<ParticipationRequestDto> confirmedRequests = List.of();
         List<ParticipationRequestDto> rejectedRequests = List.of();
 
@@ -206,13 +211,15 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         }
 
         if (status.equals(CONFIRMED.toString())) {
-            if (participantLimit.equals(0L) || (potentialParticipants <= availableParticipants && !event.getRequestModeration())) {
+            if (participantLimit.equals(0L) || (potentialParticipants <= availableParticipants &&
+                    !event.getRequestModeration())) {
                 confirmedRequests = requests.stream()
                         .peek(r -> {
                             if (!r.getStatus().equals(CONFIRMED)) {
                                 r.setStatus(CONFIRMED);
                             } else {
-                                throw new ConflictException(String.format("Запрос с id=%d уже был подтвержден", r.getId()));
+                                throw new ConflictException(String.format("Запрос с id=%d уже был подтвержден",
+                                        r.getId()));
                             }
                         })
                         .map(RequestMapper::toParticipationRequestDto)

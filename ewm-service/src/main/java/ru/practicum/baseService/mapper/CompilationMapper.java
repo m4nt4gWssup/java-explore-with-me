@@ -23,7 +23,8 @@ public final class CompilationMapper {
                 .id(entity.getId())
                 .pinned(entity.isPinned())
                 .title(entity.getTitle())
-                .events(EventMapper.toEventShortDtoList((entity.getEvents())))
+                // TODO
+                .events(EventMapper.toEventShortDtoSet((entity.getEvents())))
                 .build();
     }
 

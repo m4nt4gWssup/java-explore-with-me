@@ -1,5 +1,6 @@
 package ru.practicum.baseService.dao;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Long>, EventCriter
 
     boolean existsByCategory(Category category);
 
+    Page<Event> findByInitiator(User initiator, Pageable page);
+
     Optional<Event> findByIdAndInitiatorId(Long id, Long userId);
 
     Set<Event> findAllByIdIn(Set<Long> ids);
@@ -25,9 +28,9 @@ public interface EventRepository extends JpaRepository<Event, Long>, EventCriter
     Optional<Event> findByInitiatorAndId(User initiator, Long id);
 
     @Query("SELECT e FROM Event e " +
-            "WHERE e.initiator.id IN (:users) " +
-            "AND e.state IN (:states) " +
-            "AND e.category.id IN (:categories) " +
+            "WHERE (:users IS NULL OR e.initiator.id IN (:users)) " +
+            "AND (:states IS NULL OR e.state IN (:states)) " +
+            "AND (:categories IS NULL OR e.category.id IN (:categories)) " +
             "AND e.date BETWEEN :rangeStart AND :rangeEnd")
     List<Event> findEventsByParams(
             @Param("users") List<Long> users,

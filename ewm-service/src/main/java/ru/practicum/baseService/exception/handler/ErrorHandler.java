@@ -22,63 +22,45 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleForbiddenException(final ConflictException e) {
-        log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ErrorResponse(
-                HttpStatus.CONFLICT.toString(),
-                "Целостность нарушена.",
-                e.getMessage());
+        return handleException(e, HttpStatus.CONFLICT, "Целостность нарушена.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleForbiddenException(final ConditionsNotMetException e) {
-        log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ErrorResponse(
-                HttpStatus.CONFLICT.toString(),
-                "Для запрошенной операции условия не выполняются.",
-                e.getMessage());
+        return handleException(e, HttpStatus.CONFLICT, "Для запрошенной операции условия не выполняются.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        log.error(e.getLocalizedMessage(), e.getMessage());
-        return new ErrorResponse(
-                HttpStatus.NOT_FOUND.toString(),
-                "Требуемый объект не найден.",
-                e.getMessage());
+        return handleException(e, HttpStatus.NOT_FOUND, "Требуемый объект не найден.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBlankException(final MethodArgumentNotValidException e) {
-        log.error(e.getLocalizedMessage(), e.getMessage());
         String field = Objects.requireNonNull(e.getFieldError()).getField();
-
-        return new ErrorResponse(
-                HttpStatus.BAD_REQUEST.toString(),
-                "Некорректно составлен запрос.",
-                String.format("Поле: %s. Ошибка: не должно быть пустым. Значение: %s", field, e.getFieldValue(field)));
+        return handleException(e, HttpStatus.BAD_REQUEST, String.format("Поле: %s. Ошибка: не должно быть пустым. Значение: %s", field, e.getFieldValue(field)));
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
-        log.error(e.getLocalizedMessage(), e.getMessage());
-
-        return new ErrorResponse(
-                HttpStatus.BAD_REQUEST.toString(),
-                "Некорректно составлен запрос.",
-                e.getMessage());
+        return handleException(e, HttpStatus.BAD_REQUEST, "Некорректно составлен запрос.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse expValidation(final ValidationException e) {
-        log.error("ERROR 400: {}", e.getMessage());
+        return handleException(e, HttpStatus.BAD_REQUEST, "Некорректно составлен запрос.");
+    }
+
+    private ErrorResponse handleException(final Exception e, final HttpStatus status, final String defaultMessage) {
+        log.error(e.getLocalizedMessage(), e.getMessage());
         return new ErrorResponse(
-                HttpStatus.BAD_REQUEST.toString(),
-                "Некорректно составлен запрос.",
+                status.toString(),
+                defaultMessage,
                 e.getMessage());
     }
 }
