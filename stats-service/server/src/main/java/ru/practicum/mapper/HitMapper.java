@@ -7,23 +7,7 @@ import ru.practicum.model.Hit;
 @UtilityClass
 public class HitMapper {
 
-    public Hit toHit(HitDto dto) {
-        return Hit.builder()
-                .app(dto.getApp())
-                .ip(dto.getIp())
-                .uri(dto.getUri())
-                .timestamp(dto.getTimestamp())
-                .build();
-
-    }
-
-    public HitDto toDto(Hit entity) {
-        return HitDto.builder()
-                .id(entity.getId())
-                .app(entity.getApp())
-                .ip(entity.getIp())
-                .uri(entity.getUri())
-                .timestamp(entity.getTimestamp())
-                .build();
+    public HitDto toDto(Hit hit) {
+        return new HitDto(hit.getId(), hit.getApp(), hit.getUri(), hit.getIp(), hit.getTimestamp());
     }
 }
