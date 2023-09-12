@@ -9,12 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.baseService.dao.UserRepository;
 import ru.practicum.baseService.dto.user.NewUserRequest;
 import ru.practicum.baseService.dto.user.UserDto;
+import ru.practicum.baseService.exception.ConflictException;
 import ru.practicum.baseService.exception.ValidationException;
 import ru.practicum.baseService.mapper.UserMapper;
 import ru.practicum.baseService.model.User;
 import ru.practicum.baseService.util.page.CustomPageRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +43,13 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public UserDto save(NewUserRequest dto) {
         User user = UserMapper.toEntity(dto);
+        Optional<User> existingUser = userRepository.findByName(dto.getName());
+        if (existingUser.isPresent()) {
+            throw new ConflictException("Пользователь с таким именем уже существует");
+        }
+        if (dto.getName().length() < 2 || dto.getName().length() > 250) {
+            throw new ValidationException("Имя слишком длинное или короткое!");
+        }
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {

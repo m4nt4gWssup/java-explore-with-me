@@ -13,6 +13,7 @@ import ru.practicum.baseService.dto.Compilation.NewCompilationDto;
 import ru.practicum.baseService.dto.Compilation.UpdateCompilationRequest;
 import ru.practicum.baseService.exception.ConflictException;
 import ru.practicum.baseService.exception.NotFoundException;
+import ru.practicum.baseService.exception.ValidationException;
 import ru.practicum.baseService.mapper.CompilationMapper;
 import ru.practicum.baseService.model.Compilation;
 import ru.practicum.baseService.model.Event;
@@ -54,12 +55,16 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
     @Transactional
     @Override
     public CompilationDto update(Long compId, UpdateCompilationRequest dto) {
+        if (dto.getTitle().length() > 50) {
+            throw new ValidationException("Заголовок не должен превышать 50 символов");
+        }
         Compilation compilationTarget = compilationRepository.findById(compId)
                 .orElseThrow(() -> new NotFoundException(String.format("Подборка с id = %s не найдена", compId)));
 
         BeanUtils.copyProperties(dto, compilationTarget, "events", "pinned", "title");
 
         compilationTarget.setEvents(findEvents(dto.getEvents()));
+
         try {
             compilationRepository.flush();
         } catch (DataIntegrityViolationException e) {
