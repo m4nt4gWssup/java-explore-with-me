@@ -43,7 +43,6 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     private final CategoriesRepository categoriesRepository;
 
     @Override
-
     public List<EventShortDto> getAll(Long userId, Integer from, Integer size) {
 
         log.info("Получен список событий размером:");

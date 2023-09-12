@@ -6,8 +6,7 @@ import ru.practicum.baseService.enums.Status;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
