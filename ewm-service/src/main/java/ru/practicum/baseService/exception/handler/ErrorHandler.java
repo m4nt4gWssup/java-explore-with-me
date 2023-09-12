@@ -21,39 +21,39 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleForbiddenException(final ConflictException e) {
-        return handleException(e, HttpStatus.CONFLICT, "Целостность нарушена.");
+    public ErrorResponse handleConflictException(final ConflictException e) {
+        return handleException(e, HttpStatus.CONFLICT, "Data integrity violation.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse handleForbiddenException(final ConditionsNotMetException e) {
-        return handleException(e, HttpStatus.CONFLICT, "Для запрошенной операции условия не выполняются.");
+    public ErrorResponse handleConditionsNotMetException(final ConditionsNotMetException e) {
+        return handleException(e, HttpStatus.CONFLICT, "Conditions for the requested operation are not met.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final NotFoundException e) {
-        return handleException(e, HttpStatus.NOT_FOUND, "Требуемый объект не найден.");
+        return handleException(e, HttpStatus.NOT_FOUND, "Required object not found.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBlankException(final MethodArgumentNotValidException e) {
         String field = Objects.requireNonNull(e.getFieldError()).getField();
-        return handleException(e, HttpStatus.BAD_REQUEST, String.format("Поле: %s. Ошибка: не должно быть пустым. Значение: %s", field, e.getFieldValue(field)));
+        return handleException(e, HttpStatus.BAD_REQUEST, String.format("Field: %s. Error: should not be empty. Value: %s", field, e.getFieldValue(field)));
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
-        return handleException(e, HttpStatus.BAD_REQUEST, "Некорректно составлен запрос.");
+        return handleException(e, HttpStatus.BAD_REQUEST, "Malformed request.");
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse expValidation(final ValidationException e) {
-        return handleException(e, HttpStatus.BAD_REQUEST, "Некорректно составлен запрос.");
+    public ErrorResponse handleValidationException(final ValidationException e) {
+        return handleException(e, HttpStatus.BAD_REQUEST, "Malformed request.");
     }
 
     private ErrorResponse handleException(final Exception e, final HttpStatus status, final String defaultMessage) {
