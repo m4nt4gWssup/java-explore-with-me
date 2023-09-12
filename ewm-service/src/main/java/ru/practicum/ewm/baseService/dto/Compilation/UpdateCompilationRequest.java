@@ -15,6 +15,6 @@ public class UpdateCompilationRequest {
     private Set<Long> events;
     private Boolean pinned;
     @NotBlankNull
-    @Size(max = 50)
+    @Size(max = 128)
     private String title;
 }
