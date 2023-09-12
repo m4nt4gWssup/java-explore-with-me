@@ -2,6 +2,7 @@ package ru.practicum.adminService.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,17 +41,10 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public UserDto save(NewUserRequest dto) {
         User user = UserMapper.toEntity(dto);
-        if (user.getName() == null || user.getName().trim().isEmpty()) {
-            throw new ValidationException("Нужно заполнить имя!");
-        }
-        if (user.getEmail() == null || !user.getEmail().contains("@")) {
-            throw new ValidationException("Почта некорректна");
-        }
-        if (user.getName().length() < 2 || user.getName().length() > 250) {
-            throw new ValidationException("Имя слишком длинное или короткое!");
-        }
-        if (user.getEmail().length() < 6 || user.getEmail().length() > 254) {
-            throw new ValidationException("Почта слишком длинная или короткая!");
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new ValidationException("Данный email уже занят");
         }
         log.info("Добавлен пользователь: {}", user.getEmail());
         return UserMapper.toUserDto(user);
