@@ -91,7 +91,6 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
             userRequest.setStatus(Status.PENDING);
             eventRepository.save(event);
         }
-        // TODO
         return RequestMapper.toParticipationRequestDto(requestRepository.save(userRequest));
     }
 
@@ -102,6 +101,6 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
                 .orElseThrow(() -> new NotFoundException(String.format("Запрос с id=%d " +
                         "и requesterId=%d не найден", requestId, userId)));
         request.setStatus(Status.CANCELED);
-        return RequestMapper.toParticipationRequestDto(requestRepository.save(request));
+        return RequestMapper.toParticipationRequestDto(request);
     }
 }
