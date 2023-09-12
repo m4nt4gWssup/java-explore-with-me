@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import ru.practicum.ewm.baseService.dto.location.LocationDto;
-import ru.practicum.ewm.baseService.util.notblanknull.NotBlankNull;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 
@@ -19,11 +19,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public abstract class UpdateEventRequest {
     @Length(min = 20, max = 2000)
-    @NotBlankNull
+    @NotBlank
     private String annotation;
     private Long category;
     @Length(min = 20, max = 7000)
-    @NotBlankNull
+    @NotBlank
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
@@ -34,7 +34,7 @@ public abstract class UpdateEventRequest {
     private Long participantLimit;
     private Boolean requestModeration;
     @Length(min = 3, max = 120)
-    @NotBlankNull
+    @NotBlank
     private String title;
 
     @Override
