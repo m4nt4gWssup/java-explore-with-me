@@ -37,7 +37,7 @@ public class HitServiceImpl implements HitService {
     }
 
     @Override
-    public List<ViewStatsDto> get(String startFormat, String endFormat, List<String> uris, boolean unique) {
+    public List<ViewStatsDto> get(String startFormat, String endFormat, List<String> uris, Boolean unique) {
         LocalDateTime start;
         LocalDateTime end;
         try {

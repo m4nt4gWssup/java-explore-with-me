@@ -45,6 +45,7 @@ public class PublicEventsServiceImpl implements PublicEventsService {
         Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoSet(eventRepository
                 .findAllWithFilters(pageable, eventSearchCriteria).toSet());
         log.info("Получен список событий размером: {}", eventShorts.size());
+        hitClient.create(param.getRequest().getRemoteAddr(), param.getRequest().getRequestURI(), LocalDateTime.now());
         return eventShorts;
     }
 

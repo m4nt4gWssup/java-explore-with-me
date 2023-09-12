@@ -9,5 +9,5 @@ public interface HitService {
 
     HitDto create(HitDto hitDto);
 
-    List<ViewStatsDto> get(String startFormat, String endFormat, List<String> uris, boolean unique);
+    List<ViewStatsDto> get(String startFormat, String endFormat, List<String> uris, Boolean unique);
 }
