@@ -34,7 +34,7 @@ public class PublicEventsServiceImpl implements PublicEventsService {
     private final HitClient statsClient;
 
     @Value("${ewm.service.name}")
-    private final String serviceName;
+    private String serviceName;
 
     @Transactional
     @Override
