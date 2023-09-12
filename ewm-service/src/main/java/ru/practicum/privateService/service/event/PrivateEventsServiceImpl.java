@@ -80,6 +80,15 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
     public EventFullDto create(Long userId, NewEventDto eventDto) {
         checkEventDate(eventDto.getEventDate());
         Event event = EventMapper.toEntity(eventDto);
+        if (event.getPaid() == null) {
+            event.setPaid(false);
+        }
+        if (event.getParticipantLimit() == null) {
+            event.setParticipantLimit(0L);
+        }
+        if (event.getRequestModeration() == null) {
+            event.setRequestModeration(true);
+        }
         event.setCategory(categoriesRepository.findById(eventDto.getCategory())
                 .orElseThrow(() -> new NotFoundException(String.format("Категория с id=%d не найдена",
                         eventDto.getCategory()))));
@@ -87,7 +96,6 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         event.setInitiator(userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id=%d не найден", userId))));
         event.setViews(0L);
-        event.setPaid(true);
         try {
             event = eventRepository.save(event);
         } catch (DataIntegrityViolationException e) {
