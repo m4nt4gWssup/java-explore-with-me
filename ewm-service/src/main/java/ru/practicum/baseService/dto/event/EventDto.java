@@ -12,6 +12,8 @@ import ru.practicum.baseService.model.User;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.baseService.util.constants.Constants.DATE_FORMAT;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,16 +23,16 @@ public class EventDto {
     private String annotation;
     private Category category;
     private Long confirmedRequests;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime createdOn;
     private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime eventDate;
     private User initiator;
     private Location location;
     private boolean paid;
     private Long participantLimit;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = DATE_FORMAT)
     private LocalDateTime publishedOn;
     private boolean requestModeration;
     private State state;

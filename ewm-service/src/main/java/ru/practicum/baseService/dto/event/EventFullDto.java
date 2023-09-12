@@ -9,6 +9,8 @@ import ru.practicum.baseService.enums.State;
 
 import java.time.LocalDateTime;
 
+import static ru.practicum.baseService.util.constants.Constants.DATE_FORMAT;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class EventFullDto {
     private long confirmedRequests;
     private LocalDateTime createdOn;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_FORMAT)
     private LocalDateTime eventDate;
     private UserShortDto initiator;
     private LocationDto location;
