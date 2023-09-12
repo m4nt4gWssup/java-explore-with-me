@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Set;
 
 @Entity
@@ -16,12 +17,13 @@ import java.util.Set;
 @Table(name = "compilations")
 public class Compilation {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "pinned")
     private boolean pinned;
-    @Column(name = "title", nullable = false)
+    @NotBlank
+    @Column(name = "title")
     private String title;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "events_compilations",
