@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Hit {
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "app", nullable = false)

@@ -10,7 +10,6 @@ import ru.practicum.mapper.HitMapper;
 import ru.practicum.model.Hit;
 import ru.practicum.repository.HitRepository;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -25,7 +24,6 @@ public class HitServiceImpl implements HitService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    @Transactional
     public HitDto create(HitDto hitDto) {
         log.info("Создание информации о посещении с данными: {}", hitDto);
         return HitMapper.toDto(hitRepository.save(new Hit(
