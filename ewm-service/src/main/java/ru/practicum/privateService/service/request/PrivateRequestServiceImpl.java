@@ -90,7 +90,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
             userRequest.setStatus(Status.PENDING);
             eventRepository.save(event);
         }
-        return RequestMapper.toParticipationRequestDto(requestRepository.save(RequestMapper.toRequest(event, user)));
+        return RequestMapper.toParticipationRequestDto(userRequest);
     }
 
     @Transactional

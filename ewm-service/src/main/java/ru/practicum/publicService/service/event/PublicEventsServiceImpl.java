@@ -36,8 +36,10 @@ public class PublicEventsServiceImpl implements PublicEventsService {
     @Override
     public Set<EventShortDto> getAll(RequestParamForEvent param) {
         CustomPageRequest pageable = createPageable(param.getSort(), param.getFrom(), param.getSize());
-        if (param.getRangeStart().isAfter(param.getRangeEnd())) {
-            throw new ValidationException("Неправильно указано время");
+        if (param.getRangeStart() != null && param.getRangeEnd() != null) {
+            if (param.getRangeStart().isAfter(param.getRangeEnd())) {
+                throw new ValidationException("Неправильно указано время");
+            }
         }
         EventSearchCriteria eventSearchCriteria = createCriteria(param);
         Set<EventShortDto> eventShorts = EventMapper.toEventShortDtoList(eventRepository
