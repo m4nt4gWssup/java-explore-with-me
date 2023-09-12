@@ -44,9 +44,9 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
     @Transactional
     @Override
     public ParticipationRequestDto create(Long userId, Long eventId) {
-        Event event = eventRepository.findById(eventId)
+        final Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(String.format("Событие с id = %s не найдено", eventId)));
-        User user = userRepository.findById(userId)
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(String.format("Пользователь с id = %s не найден", userId)));
         Request userRequest = new Request();
         if (requestRepository.existsByRequesterIdAndEventId(userId, eventId)) {
@@ -90,7 +90,7 @@ public class PrivateRequestServiceImpl implements PrivateRequestService {
             userRequest.setStatus(Status.PENDING);
             eventRepository.save(event);
         }
-        return RequestMapper.toParticipationRequestDto(userRequest);
+        return RequestMapper.toParticipationRequestDto(requestRepository.save(userRequest));
     }
 
     @Transactional
