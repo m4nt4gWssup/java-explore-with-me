@@ -2,7 +2,6 @@ package ru.practicum.adminService.service.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,7 +49,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         if (user.getName().length() < 2 || user.getName().length() > 250) {
             throw new ValidationException("Имя слишком длинное или короткое!");
         }
-        if (user.getEmail().length() < 6 || user.getEmail().length() > 254 ) {
+        if (user.getEmail().length() < 6 || user.getEmail().length() > 254) {
             throw new ValidationException("Почта слишком длинная или короткая!");
         }
         log.info("Добавлен пользователь: {}", user.getEmail());
