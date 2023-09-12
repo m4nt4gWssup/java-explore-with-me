@@ -33,6 +33,7 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
         try {
             category = categoriesRepository.save(category);
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при создании категории: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
         log.info("Добавлена категория: {}", category.getName());
@@ -55,11 +56,11 @@ public class AdminCategoriesServiceImpl implements AdminCategoriesService {
     public CategoryDto update(NewCategoryDto dto, Long catId) {
         Category categoryUpdate = CategoryMapper.toCategory(dto);
         Category categoryTarget = get(catId);
-
         try {
             UtilMergeProperty.copyProperties(categoryUpdate, categoryTarget);
             categoriesRepository.flush();
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при обновлении категории: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
         log.info("Обновлена категория: {}", categoryTarget.getName());

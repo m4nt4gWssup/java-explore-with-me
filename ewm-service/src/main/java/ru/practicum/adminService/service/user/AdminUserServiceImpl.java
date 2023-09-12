@@ -53,6 +53,7 @@ public class AdminUserServiceImpl implements AdminUserService {
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при создании пользователя: {}", e.getMessage(), e);
             throw new ValidationException("Данный email уже занят");
         }
         log.info("Добавлен пользователь: {}", user.getEmail());

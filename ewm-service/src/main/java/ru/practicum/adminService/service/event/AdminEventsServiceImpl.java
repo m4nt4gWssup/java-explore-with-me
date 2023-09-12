@@ -85,6 +85,7 @@ public class AdminEventsServiceImpl implements AdminEventsService {
         try {
             eventRepository.flush();
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при обновлении события: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
         log.info("Обновлено событие: {}", event.getTitle());

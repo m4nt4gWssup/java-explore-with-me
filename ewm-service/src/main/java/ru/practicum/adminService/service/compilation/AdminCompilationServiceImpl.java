@@ -36,6 +36,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         try {
             compilation = compilationRepository.save(compilation);
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при создании подборки: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
         log.info("Добавлена подборка: {}", compilation.getTitle());
@@ -64,6 +65,7 @@ public class AdminCompilationServiceImpl implements AdminCompilationService {
         try {
             compilationRepository.flush();
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при обновлении подборки: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
 

@@ -93,6 +93,7 @@ public class PrivateEventsServiceImpl implements PrivateEventsService {
         try {
             event = eventRepository.save(event);
         } catch (DataIntegrityViolationException e) {
+            log.error("Ошибка при создании события: {}", e.getMessage(), e);
             throw new ConflictException(e.getMessage(), e);
         }
         log.info("Добавлено событие: {}", event.getTitle());
