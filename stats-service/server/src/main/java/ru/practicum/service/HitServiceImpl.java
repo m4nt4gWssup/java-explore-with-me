@@ -3,6 +3,7 @@ package ru.practicum.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.dto.HitDto;
 import ru.practicum.dto.ViewStatsDto;
 import ru.practicum.exception.ValidationException;
@@ -24,6 +25,7 @@ public class HitServiceImpl implements HitService {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
+    @Transactional
     public HitDto create(HitDto hitDto) {
         log.info("Создание информации о посещении с данными: {}", hitDto);
         return HitMapper.toDto(hitRepository.save(new Hit(
