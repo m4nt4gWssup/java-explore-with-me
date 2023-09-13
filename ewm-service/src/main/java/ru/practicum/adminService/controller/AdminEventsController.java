@@ -11,15 +11,12 @@ import ru.practicum.adminService.dto.RequestParamForEvent;
 import ru.practicum.adminService.service.event.AdminEventsService;
 import ru.practicum.baseService.dto.event.EventFullDto;
 import ru.practicum.baseService.dto.event.UpdateEventAdminRequest;
-import ru.practicum.baseService.enums.State;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,20 +37,8 @@ public class AdminEventsController {
                                                      @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получен запрос GET /admin/events");
 
-        List<State> statesEnum = null;
-        if (states != null) {
-            statesEnum = states.stream().map(State::from).filter(Objects::nonNull).collect(Collectors.toList());
-        }
-
-        RequestParamForEvent param = RequestParamForEvent.builder()
-                .users(users)
-                .states(statesEnum)
-                .categories(categories)
-                .rangeStart(rangeStart)
-                .rangeEnd(rangeEnd)
-                .from(from)
-                .size(size)
-                .build();
+        RequestParamForEvent param = service.buildRequestParamForEvent(users, states, categories,
+                rangeStart, rangeEnd, from, size);
         return new ResponseEntity<>(service.getAll(param), HttpStatus.OK);
     }
 

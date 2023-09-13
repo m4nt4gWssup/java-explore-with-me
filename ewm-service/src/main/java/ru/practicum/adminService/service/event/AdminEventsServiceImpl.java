@@ -22,6 +22,7 @@ import ru.practicum.baseService.util.page.CustomPageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,5 +116,27 @@ public class AdminEventsServiceImpl implements AdminEventsService {
             throw new ValidationException("Поле: eventDate. Ошибка: дата и время проведения " +
                     "события не могут быть раньше чем через два часа от текущего момента. Значение: " + eventDate);
         }
+    }
+
+    public RequestParamForEvent buildRequestParamForEvent(List<Long> users,
+                                                          List<String> states,
+                                                          List<Long> categories,
+                                                          LocalDateTime rangeStart,
+                                                          LocalDateTime rangeEnd,
+                                                          int from,
+                                                          int size) {
+        List<State> statesEnum = null;
+        if (states != null) {
+            statesEnum = states.stream().map(State::from).filter(Objects::nonNull).collect(Collectors.toList());
+        }
+        return RequestParamForEvent.builder()
+                .users(users)
+                .states(statesEnum)
+                .categories(categories)
+                .rangeStart(rangeStart)
+                .rangeEnd(rangeEnd)
+                .from(from)
+                .size(size)
+                .build();
     }
 }
