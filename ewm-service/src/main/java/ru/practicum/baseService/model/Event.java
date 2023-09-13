@@ -23,7 +23,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "annotation")
-    @NotNull
+    @NotBlank
     private String annotation;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
             fetch = FetchType.LAZY)
@@ -35,7 +35,7 @@ public class Event {
     @Column(name = "createdOn")
     private LocalDateTime createdOn;
     @Column(name = "description")
-    @NotNull
+    @NotBlank
     private String description;
     @Column(name = "date")
     private LocalDateTime date;
