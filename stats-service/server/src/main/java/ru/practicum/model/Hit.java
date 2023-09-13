@@ -1,30 +1,31 @@
 package ru.practicum.model;
 
+
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "hits")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Hit {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @Column(name = "app", nullable = false)
     private String app;
-    @NotBlank
+    @Column(name = "uri", nullable = false)
     private String uri;
-    @Pattern(regexp = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
+    @Column(name = "ip", nullable = false)
     private String ip;
-    @NotNull
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 }
