@@ -47,9 +47,6 @@ public class AdminUserServiceImpl implements AdminUserService {
         if (existingUser.isPresent()) {
             throw new ConflictException("Пользователь с таким именем уже существует");
         }
-        if (dto.getName().length() < 2 || dto.getName().length() > 250) {
-            throw new ValidationException("Имя слишком длинное или короткое!");
-        }
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException e) {
