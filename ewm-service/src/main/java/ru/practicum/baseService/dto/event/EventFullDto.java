@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.baseService.dto.Category.CategoryDto;
+import ru.practicum.baseService.dto.category.CategoryDto;
 import ru.practicum.baseService.dto.location.LocationDto;
 import ru.practicum.baseService.dto.user.UserShortDto;
 import ru.practicum.baseService.enums.State;

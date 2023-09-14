@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.baseService.dto.Category.CategoryDto;
+import ru.practicum.baseService.dto.category.CategoryDto;
 import ru.practicum.baseService.dto.user.UserShortDto;
 
 import java.time.LocalDateTime;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.practicum.baseService.dto.Compilation.CompilationDto;
+import ru.practicum.baseService.dto.compilation.CompilationDto;
 import ru.practicum.publicService.service.compilation.PublicCompilationsService;
 
 import java.util.List;

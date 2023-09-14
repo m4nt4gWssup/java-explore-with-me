@@ -1,8 +1,8 @@
 package ru.practicum.baseService.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.baseService.dto.Category.CategoryDto;
-import ru.practicum.baseService.dto.Category.NewCategoryDto;
+import ru.practicum.baseService.dto.category.CategoryDto;
+import ru.practicum.baseService.dto.category.NewCategoryDto;
 import ru.practicum.baseService.model.Category;
 
 import java.util.List;

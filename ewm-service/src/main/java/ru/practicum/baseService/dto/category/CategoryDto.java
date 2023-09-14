@@ -1,4 +1,4 @@
-package ru.practicum.baseService.dto.Category;
+package ru.practicum.baseService.dto.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

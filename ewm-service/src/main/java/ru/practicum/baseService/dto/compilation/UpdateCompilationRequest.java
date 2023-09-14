@@ -1,4 +1,4 @@
-package ru.practicum.baseService.dto.Compilation;
+package ru.practicum.baseService.dto.compilation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
