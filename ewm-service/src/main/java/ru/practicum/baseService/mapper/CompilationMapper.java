@@ -1,8 +1,8 @@
 package ru.practicum.baseService.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.baseService.dto.Compilation.CompilationDto;
-import ru.practicum.baseService.dto.Compilation.NewCompilationDto;
+import ru.practicum.baseService.dto.compilation.CompilationDto;
+import ru.practicum.baseService.dto.compilation.NewCompilationDto;
 import ru.practicum.baseService.model.Compilation;
 
 import java.util.List;

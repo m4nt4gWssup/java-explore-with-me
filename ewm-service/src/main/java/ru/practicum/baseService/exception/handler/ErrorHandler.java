@@ -6,10 +6,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.baseService.exception.ConditionsNotMetException;
-import ru.practicum.baseService.exception.ConflictException;
-import ru.practicum.baseService.exception.NotFoundException;
-import ru.practicum.baseService.exception.ValidationException;
+import ru.practicum.baseService.exception.*;
 import ru.practicum.baseService.exception.error.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
@@ -53,6 +50,12 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidationException(final ValidationException e) {
+        return handleException(e, HttpStatus.BAD_REQUEST, "Malformed request.");
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleCommentUpdateException(final CommentUpdateException e) {
         return handleException(e, HttpStatus.BAD_REQUEST, "Malformed request.");
     }
 

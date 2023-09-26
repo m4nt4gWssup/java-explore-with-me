@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.baseService.dao.CategoriesRepository;
-import ru.practicum.baseService.dto.Category.CategoryDto;
+import ru.practicum.baseService.dto.category.CategoryDto;
 import ru.practicum.baseService.exception.NotFoundException;
 import ru.practicum.baseService.mapper.CategoryMapper;
 import ru.practicum.baseService.model.Category;

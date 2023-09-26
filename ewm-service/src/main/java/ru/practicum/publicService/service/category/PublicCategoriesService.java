@@ -1,6 +1,6 @@
 package ru.practicum.publicService.service.category;
 
-import ru.practicum.baseService.dto.Category.CategoryDto;
+import ru.practicum.baseService.dto.category.CategoryDto;
 
 import java.util.List;
 

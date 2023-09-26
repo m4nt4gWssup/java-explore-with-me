@@ -7,9 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.adminService.service.compilation.AdminCompilationService;
-import ru.practicum.baseService.dto.Compilation.CompilationDto;
-import ru.practicum.baseService.dto.Compilation.NewCompilationDto;
-import ru.practicum.baseService.dto.Compilation.UpdateCompilationRequest;
+import ru.practicum.baseService.dto.compilation.CompilationDto;
+import ru.practicum.baseService.dto.compilation.NewCompilationDto;
+import ru.practicum.baseService.dto.compilation.UpdateCompilationRequest;
 
 import javax.validation.Valid;
 

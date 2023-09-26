@@ -1,4 +1,4 @@
-package ru.practicum.baseService.dto.Compilation;
+package ru.practicum.baseService.dto.category;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,16 +7,20 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NewCompilationDto {
-    private Set<Long> events;
-    private boolean pinned;
+public class NewCategoryDto {
     @NotBlank
     @Size(max = 50)
-    private String title;
+    private String name;
+
+    @Override
+    public String toString() {
+        return "NewCategoryDto{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
